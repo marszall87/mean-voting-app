@@ -1,14 +1,18 @@
-var gulp = require('gulp');
-var less = require('gulp-less');
-var uglify = require('gulp-uglify');
-var connect = require('gulp-connect');
-var plumber = require('gulp-plumber');
-var notify = require('gulp-notify');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var sourcemaps = require('gulp-sourcemaps');
-var eslint = require('gulp-eslint');
+'use strict';
+
+const gulp = require('gulp');
+const less = require('gulp-less');
+const uglify = require('gulp-uglify');
+const connect = require('gulp-connect');
+const plumber = require('gulp-plumber');
+const notify = require('gulp-notify');
+const browserify = require('browserify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const sourcemaps = require('gulp-sourcemaps');
+const eslint = require('gulp-eslint');
+const babelify = require('babelify');
+const merge = require('merge-stream');
 
 var config = {
   root: 'public/',
@@ -25,11 +29,16 @@ var config = {
     src: ['client/styles/**/*.less'],
     dest: 'public/styles/'
   },
-  assets: {
-    // src: 'node_modules/font-awesome/fonts/*',
-    src: [],
-    dest: 'public/assets/'
-  }
+  assets: [
+    {
+      src: 'client/**/*.html',
+      dest: 'public/'
+    },
+    {
+      src: 'node_modules/font-awesome/fonts/*',
+      dest: 'public/fonts'
+    }
+  ]
 };
 
 gulp.task('less', function () {
@@ -49,6 +58,7 @@ gulp.task('lint', function () {
 
 gulp.task('js', function () {
   var bundleStream = browserify(config.js.entrypoint)
+    .transform('babelify')
     .bundle()
     .on('error', notify.onError());
 
@@ -66,13 +76,16 @@ gulp.task('js', function () {
 gulp.task('watch', function () {
   gulp.watch(config.js.src, ['lint', 'js']);
   gulp.watch(config.less.src, ['less']);
-  gulp.watch(config.assets.src, ['assets']);
+  gulp.watch(config.assets.map(asset => asset.src), ['assets']);
 });
 
 gulp.task('assets', function () {
-  return gulp.src(config.assets.src)
-    .pipe(gulp.dest(config.assets.dest))
-    .pipe(connect.reload());
+  const streams = config.assets.map(asset => {
+    return gulp.src(asset.src)
+      .pipe(gulp.dest(asset.dest))
+      .pipe(connect.reload());
+  });
+  return merge.apply(null, streams);
 });
 
 gulp.task('connect', function () {
@@ -82,4 +95,4 @@ gulp.task('connect', function () {
   });
 });
 
-gulp.task('default', ['lint', 'js', 'less', 'assets', 'watch', 'connect']);
+gulp.task('default', ['js', 'less', 'assets', 'watch', 'connect']);

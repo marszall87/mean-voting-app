@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const logger = require(path.resolve('./utils/logger.js'));
+const logger = require(path.resolve('./server/utils/logger.js'));
 
 /* eslint no-unused-vars: 0 */
 //noinspection JSUnusedLocalSymbols

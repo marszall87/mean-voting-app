@@ -14,7 +14,14 @@ const PollSchema = new mongoose.Schema({
   },
   answers: {
     type: [{
-      type: String
+      title: {
+        type: String,
+        required: 'Title cannot be empty'
+      },
+      votes: {
+        type: Number,
+        default: 0
+      }
     }],
     required: 'Answers should not be empty',
     validate: [
