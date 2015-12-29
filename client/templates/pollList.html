@@ -1,6 +1,9 @@
 <h5>Active polls</h5>
 <div class="list-group">
   <a ui-sref="show-poll({id: poll._id})" class="list-group-item" ng-repeat="poll in vm.polls">
-    {{poll.title}} <span class="badge">created {{poll.created | fromNow}}</span>
+    {{poll.title}} <small class="pull-right text-muted">created {{poll.created | fromNow}}</small>
   </a>
 </div>
+<p ng-if="!vm.polls.length">
+  No polls here! Please, create a new one.
+</p>
