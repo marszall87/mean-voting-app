@@ -62,7 +62,7 @@ gulp.task('js', function () {
     .bundle()
     .on('error', notify.onError());
 
-  bundleStream
+  return bundleStream
     .pipe(source('app.js'))
     .pipe(buffer())
     .pipe(plumber({errorHandler: notify.onError()}))
@@ -73,7 +73,7 @@ gulp.task('js', function () {
     .pipe(connect.reload());
 });
 
-gulp.task('watch', function () {
+gulp.task('watchers', function () {
   gulp.watch(config.js.src, ['lint', 'js']);
   gulp.watch(config.less.src, ['less']);
   gulp.watch(config.assets.map(asset => asset.src), ['assets']);
@@ -95,4 +95,5 @@ gulp.task('connect', function () {
   });
 });
 
-gulp.task('default', ['js', 'less', 'assets', 'watch', 'connect']);
+gulp.task('default', ['lint', 'js', 'less', 'assets']);
+gulp.task('watch', ['default', 'watchers', 'connect']);

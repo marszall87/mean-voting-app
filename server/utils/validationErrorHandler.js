@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
+const logger = require('./logger.js');
 
 /* eslint no-unused-vars: 0 */
 //noinspection JSUnusedLocalSymbols
@@ -9,7 +10,6 @@ function validationErrorHandler(err, req, res, next) {
     res.status(400).send({
       errors: _.mapValues(err.errors, e => e.message)
     });
-
   } else {
     // it's not validation error, pass it on
     next(err);

@@ -1,13 +1,19 @@
 'use strict';
 
-pollList.$inject = ['pollResource'];
+pollList.$inject = ['Poll'];
 
-function pollList(pollResource) {
+function pollList(Poll) {
   const vm = this;
 
-  pollResource.query().$promise.then(result => {
-    vm.polls = result;
-  });
+  vm.polls = [];
+
+  init();
+
+  function init() {
+    Poll.query().$promise.then(result => {
+      vm.polls = result;
+    });
+  }
 
   return vm;
 }

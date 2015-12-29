@@ -57,14 +57,9 @@ describe('poll routes', () => {
 
   it('should return polls', () => {
     return agent.get('/polls').expect(200).expect(res => {
-      res.body.should.contain({
-        _id: pollA.id,
-        title: pollA.title
-      });
-      res.body.should.contain({
-        _id: pollB.id,
-        title: pollB.title
-      });
+      console.log(res.body);
+      res.body.should.include.something.that.have.property('_id', pollA.id);
+      res.body.should.include.something.that.have.property('_id', pollB.id);
     });
   });
 

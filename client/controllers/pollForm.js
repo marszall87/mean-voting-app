@@ -1,8 +1,8 @@
 'use strict';
 
-pollForm.$inject = ['pollResource'];
+pollForm.$inject = ['Poll', '$state'];
 
-function pollForm(pollResource) {
+function pollForm(Poll, $state) {
   const vm = this;
 
   const defaultPoll = {
@@ -21,11 +21,27 @@ function pollForm(pollResource) {
     vm.poll.answers.push('');
   }
 
-  function save() {
-    const poll = new pollResource(vm.poll);
-    poll.$save().then(() => {
-      console.log('saved');
+  function parseErrors(errors) {
+    const parsedErrors = {};
+    // crazy... deals with 'answers.0.title' validation error keys from Mongoose
+    Object.keys(errors).map(e => {
+      e.split('.').reduce((object, item, index, array) => {
+        if (index == array.length - 1) {
+          object[item] = errors[e];
+        } else if (!object[item]) {
+          object[item] = {};
+        }
+        return object[item];
+      }, parsedErrors);
     });
+    vm.errors = parsedErrors;
+  }
+
+  function save() {
+    const poll = new Poll(vm.poll);
+    poll.$save().then(() => {
+      $state.go('poll-list');
+    }).catch(err => parseErrors(err.data.errors));
   }
 }
 

@@ -1,9 +1,15 @@
 'use strict';
 
-pollResource.$inject = ['$resource', 'config'];
+Poll.$inject = ['$resource', 'config'];
 
-function pollResource($resource, config) {
-  return $resource(`http://${config.server.host}:${config.server.port}/polls/:id`);
+function Poll($resource, config) {
+  const baseURL = `http://${config.server.host}:${config.server.port}`;
+  return $resource(`${baseURL}/polls/:id`, null, {
+    vote: {
+      method: 'POST',
+      url: `${baseURL}/polls/:id/vote/:answerId`
+    }
+  });
 }
 
-module.exports = pollResource;
+module.exports = Poll;

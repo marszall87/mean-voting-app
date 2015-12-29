@@ -1,19 +1,17 @@
 <form>
-  <div class="form-group">
+  <div class="form-group" ng-class="{'has-error': vm.errors.title}">
     <label class="control-label" for="title">Title</label>
     <input class="form-control" id="title" type="text" ng-model="vm.poll.title">
+    <span class="help-block" ng-show="vm.errors.title">{{ vm.errors.title }}</span>
   </div>
 
-  <div class="form-group" ng-repeat="answer in vm.poll.answers track by $index">
+  <div class="form-group" ng-class="{'has-error': vm.errors.answers[$index].title}" ng-repeat="answer in vm.poll.answers track by $index">
     <label class="control-label" for="answer[{{$index}}]">Answer {{$index + 1}}</label>
     <input class="form-control" id="answer[{{$index}}]" type="text" ng-model="vm.poll.answers[$index]">
+    <span class="help-block" ng-show="vm.errors.answers[$index].title">{{ vm.errors.answers[$index].title }}</span>
   </div>
   <div class="form-group">
-    <button type="submit" class="btn" ng-click="vm.addAnswer()"><i class="fa fa-plus"></i> add another answer</button>
-  </div>
-
-  <div class="form-group">
+    <button type="button" class="btn btn-default" ng-click="vm.addAnswer()"><i class="fa fa-plus"></i> add another answer</button>
     <button type="submit" ng-click="vm.save()" class="btn btn-primary pull-right"><i class="fa fa-check"></i> save</button>
   </div>
-
 </form>

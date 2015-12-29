@@ -2,3 +2,55 @@
 @import '../../node_modules/bootswatch/paper/variables';
 @import '../../node_modules/bootswatch/paper/bootswatch';
 @import '../../node_modules/font-awesome/less/font-awesome';
+
+.poll-votes {
+  a {
+    .progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      margin-bottom: 0;
+    }
+    &:last-of-type {
+      .progress {
+        border-bottom-right-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+    }
+  }
+}
+
+.badge-success {
+  background-color: @brand-success;
+}
+
+.ui-view-container {
+  position: relative;
+}
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+  position: absolute;
+  width: 100%;
+  .transition(all .5s ease-in-out);
+}
+
+[ui-view].ng-enter {
+  opacity: 0;
+  .translate(30%, 0);
+}
+
+[ui-view].ng-enter-active {
+  opacity: 1;
+  .translate(0, 0);
+}
+
+[ui-view].ng-leave {
+  opacity: 1;
+  .translate(0, 0);
+}
+
+[ui-view].ng-leave-active {
+  opacity: 0;
+  .translate(-30%, 0);
+}

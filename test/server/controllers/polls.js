@@ -73,6 +73,15 @@ describe('poll controller', () => {
       should.throw(() => controller.findPollById('x'), error.InvalidRequest);
     });
 
+    describe('poll votes', () => {
+      it('should increase vote by 1', () => {
+        const oldVotes = _poll.answers[0].votes;
+        const poll = controller.vote(_poll, _poll.answers[0].id);
+        return poll.should.eventually.have.property('answers').to.have.property('0').to.have.property('votes', oldVotes+1);
+      });
+
+    });
+
   });
 
 });

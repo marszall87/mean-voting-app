@@ -44,6 +44,7 @@ function initExpress() {
 
   app.use(validationErrorHandler);
   app.use(errorHandler);
+  app.use(express.static('public'));
 
   return new Promise(resolve => {
     resolve(app);

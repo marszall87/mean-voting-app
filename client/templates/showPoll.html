@@ -1,0 +1,9 @@
+<h5>{{vm.poll.title}}</h5>
+<div class="list-group poll-votes">
+  <a href ng-click="vm.vote(answer)" class="list-group-item" ng-repeat="answer in vm.poll.answers track by answer._id">
+    {{answer.title}} <span class="badge" ng-class="{'badge-success': answer.winner}">{{answer.votes}}</span>
+    <div class="progress">
+      <div class="progress-bar" ng-class="{'progress-bar-success': answer.winner}" style="width: {{answer.percent}}%;"></div>
+    </div>
+  </a>
+</div>

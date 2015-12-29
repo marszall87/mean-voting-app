@@ -29,7 +29,7 @@ function findPollById(id) {
 }
 
 function listPolls() {
-  return Poll.find().select('id title').sort('-created').exec();
+  return Poll.find().select('title created').sort('-created').exec();
 }
 
 function updatePoll(poll, title, answers) {

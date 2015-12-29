@@ -1,6 +1,8 @@
 'use strict';
 
 var winston = require('winston');
+var path = require('path');
+var config = require(path.resolve('./config/config.js'));
 
 var logger = new (winston.Logger)({
   transports: [
@@ -9,7 +11,8 @@ var logger = new (winston.Logger)({
       timestamp: true,
       prettyPrint: true,
       depth: 4,
-      handleExceptions: true
+      handleExceptions: true,
+      level: config.logger.level
     })
   ]
 });
